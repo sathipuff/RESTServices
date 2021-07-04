@@ -1,11 +1,14 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Buangkok Bus Services</title>
+<!DOCTYPE html>
+<html lang="en" data-ng-app="BusArrivalApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="refresh" content="60">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
-	<script src="lib/angular.js"></script>
+
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+    <script data-require="angular.js@*" data-semver="1.3.0-beta.5" src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+    <script data-require="ui-router@*" data-semver="0.2.10" src="https://rawgit.com/angular-ui/ui-router/0.2.10/release/angular-ui-router.js"></script>
     <script src="app.js"></script>
     <style>
       .emptyMessage {
@@ -24,38 +27,23 @@
         color: green;
       }
     </style>
+</head>
 
-  </head>
-<body ng-app='BusArrivalApp'>
+<header>
+    <data-user-profile class="user-profile"></data-user-profile>
+    <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+            <a class="nav-link" href="#/busarrival">Bus Arrivals</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#/remotecontrol">Remote Control</a>
+        </li>
+    </ul>
+</header>
+<hr />
 
-  <div class="container">
-  <h1 align="center" valign="middle">Buangkok Bus Services</h1>
-  <div align="center" >
-  <iframe src="http://free.timeanddate.com/clock/i5u6bdnf/n236/fn14/fs18/fc999/tct/pct/ftb/th2" frameborder="0" width="118" height="24" allowTransparency="true" ></iframe>
-  </div>
-  <br>
-  <div class="col-md-6" ng-controller='BusArrivalController as busArrivalCtlr'>
-       <table class="table" ng-repeat="busstop in busArrivalCtlr.arrivals.BusStops">
-         <tr>
-           <th nowrap scope="row" style="font-size: 4.25vw;" colspan="7" align="center" valign="middle">  Bus Stop {{ busstop.BusStopCode }}</th>
-         </tr>
-         <tr ng-repeat="service in busstop.Services">
-           <th scope="row" style="font-size: 6.5vw;">  {{ service.ServiceNo }}</th>
-           <td></td>
-           <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
-           <td></td>
-           <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus2.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
-           <td></td>
-           <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus3.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
-           <td></td>
-         </tr>
-         <br>
-         <br>
-       </table>
+<body>
 
-  </div>
-
-  </div>
-
+<div ui-view=""></div>
 </body>
 </html>

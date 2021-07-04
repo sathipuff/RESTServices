@@ -51,8 +51,8 @@ console.log("DIFF : "+minutesDifference);
   return displayMinsStr.padStart(6,' ');
 }
 
-BusArrivalController.$inject = ['BusArrivalService'];
-function BusArrivalController(BusArrivalService) {
+BusArrivalController.$inject = ['BusArrivalService','$scope'];
+function BusArrivalController(BusArrivalService, $scope) {
   var busArrivalCtlr = this;
   var promise = BusArrivalService.getBusStopArrival('66481,66551,66589,64129');
 
@@ -64,6 +64,10 @@ function BusArrivalController(BusArrivalService) {
     console.log(error);
   });
 
+  $scope.sendCommand = function(component, cmd){
+        console.log("Calling send command in service");
+        BusArrivalService.sendRemoteControlCommand(component,cmd);
+  };
 }
 
 BusArrivalService.$inject = ['$http','RPI_ENDPOINT'];
@@ -78,6 +82,20 @@ function BusArrivalService($http, RPI_ENDPOINT) {
     return response;
   };
 
+  service.sendRemoteControlCommand = function (component, cmd) {
+    var data = {
+        component: component,
+        command: cmd
+    };
+    var jsondata = JSON.stringify(data);
+    console.log('sending remote control command');
+    console.log(jsondata);
+    var response = $http({
+        method: 'POST',
+        url: (RPI_ENDPOINT+"/remoteControlAction"),
+        data: jsondata
+    });
+  };
 }
 
 
