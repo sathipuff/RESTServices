@@ -1,13 +1,30 @@
 (function () {
 'use strict';
-
-angular.module('BusArrivalApp', [])
+var app =
+angular.module('BusArrivalApp', ['ui.router'])
 .controller('BusArrivalController', BusArrivalController)
 .service('BusArrivalService', BusArrivalService)
-.constant('RPI_ENDPOINT', "http://192.168.1.119:8080")
+.constant('RPI_ENDPOINT', "http://127.0.0.1:8080")
 .filter('remainingMins', function(){
   return remainingMins;
 } );
+
+app.config(['$httpProvider', '$stateProvider', '$urlRouterProvider',
+  function($httpProvider, $stateProvider, $urlRouterProvider) {
+
+    $stateProvider
+      .state('remotecontrol', {
+        url: '/remotecontrol',
+        templateUrl: '/pages/remotecontrol.html',
+      })
+      .state('busarrival', {
+        url: '/busarrival',
+        templateUrl: '/pages/busarrival.html',
+      });
+
+    $urlRouterProvider.otherwise('/pages/busarrival.html');
+  }
+]);
 
 
 var remainingMins = function(busArrivalTime,currentTime){
@@ -23,7 +40,7 @@ var remainingMins = function(busArrivalTime,currentTime){
   var minutesDifference = Math.floor(difference/1000/60);
 
 var displayMinsStr;
-console.log("DIFF"+minutesDifference);
+console.log("DIFF : "+minutesDifference);
   if(minutesDifference <= 0){
     console.log("HIT 0 "+minutesDifference);
     displayMinsStr  = 'Arr';

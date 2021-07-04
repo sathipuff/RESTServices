@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Arriaval Timing</title>
+</head>
+<body ng-app='BusArrivalApp'>
+
+<div class="container">
+    <h1 align="center" valign="middle">Buangkok Bus Services</h1>
+    <div align="center" >
+        <iframe src="http://free.timeanddate.com/clock/i5u6bdnf/n236/fn14/fs18/fc999/tct/pct/ftb/th2" frameborder="0" width="118" height="24" allowTransparency="true" ></iframe>
+    </div>
+    <br>
+    <div class="col-md-6" ng-controller='BusArrivalController as busArrivalCtlr'>
+        <table class="table" ng-repeat="busstop in busArrivalCtlr.arrivals.BusStops">
+            <tr>
+                <th nowrap scope="row" style="font-size: 4.25vw;" colspan="7" align="center" valign="middle">  Bus Stop {{ busstop.BusStopCode }}</th>
+            </tr>
+            <tr ng-repeat="service in busstop.Services">
+                <th scope="row" style="font-size: 6.5vw;">  {{ service.ServiceNo }}</th>
+                <td></td>
+                <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
+                <td></td>
+                <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus2.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
+                <td></td>
+                <td  nowrap style="font-size: 5.25vw;" align="center" valign="middle">{{ service.NextBus3.EstimatedArrival | remainingMins:busstop.RequestTs}} </td>
+                <td></td>
+            </tr>
+            <br>
+            <br>
+        </table>
+
+    </div>
+
+</div>
+</body>
+</html>
