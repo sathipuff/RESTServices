@@ -36,7 +36,7 @@ public class WebServiceUtility {
 	public static final MultiValueMap<String, String> LTA_WEB_HEADERS =new LinkedMultiValueMap<String, String>();
 
 	@Value("${lta.webservices.apikey}")
-	private String API_ACCOUNT_KEY = "jLKaEYoP45M0lKE0wYUagA==";
+	private String API_ACCOUNT_KEY;
 	
 	@PostConstruct
 	public void init(){

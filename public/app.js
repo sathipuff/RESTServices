@@ -68,6 +68,12 @@ function BusArrivalController(BusArrivalService, $scope) {
         console.log("Calling send command in service");
         BusArrivalService.sendRemoteControlCommand(component,cmd);
   };
+
+  $scope.toggleControl = function(component){
+       console.log("Toggle component for ", component);
+//       $scope.date1 = !$scope.date1;
+        $scope.activeControl = component;
+  };
 }
 
 BusArrivalService.$inject = ['$http','RPI_ENDPOINT'];
