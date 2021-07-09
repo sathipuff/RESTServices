@@ -1,10 +1,10 @@
 package com.sathi.pi.api;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.sathi.pi.model.RemoteControlRequest;
 import com.sathi.pi.util.BashCommandExecutor;
+import com.sathi.pi.util.WebServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +15,30 @@ import org.springframework.web.bind.annotation.*;
 import com.sathi.pi.model.BusArrivalResponse;
 import com.sathi.pi.model.MutliBusStopArrivalresponse;
 import com.sathi.pi.util.ApiCallEnum;
-import com.sathi.pi.util.WebServiceUtility;
 
 @RestController
 public class PiApi {
 	private static final Logger log = LoggerFactory.getLogger(PiApi.class);
-	@Autowired
-	WebServiceUtility webServiceUtility;
 
 	@Autowired
 	BashCommandExecutor commandExecutor;
 
+	@Autowired
+	WebServiceClient webServiceClient;
+
 	@RequestMapping(method= RequestMethod.GET, value = "/getArrivalTiming", produces=MediaType.APPLICATION_JSON_VALUE)
 	public MutliBusStopArrivalresponse getBusArrivalTimes(
 			@RequestParam(value = "busStops") String busStops) {
+		
 		log.info("************************* BEGIN getBusArrivalTimes ************************* ");
 		log.info("Gotten Reqeuest for Buststops:{}",busStops);
 		List<BusArrivalResponse> busArrivalRespList = new ArrayList<BusArrivalResponse>();
 		MutliBusStopArrivalresponse mutliBusStopArrivalresponse = new MutliBusStopArrivalresponse();
-		
-		for (String busStop : busStops.split(",")){
+
+		String[] busStopsArr = busStops.split(",");
+		for (String busStop : busStopsArr){
 			if(!StringUtils.isEmpty(busStop)){
-				BusArrivalResponse response = webServiceUtility.POSTService(ApiCallEnum.BUS_ARRIVAL, busStop, BusArrivalResponse.class);
+				BusArrivalResponse response = webServiceClient.getRequest(ApiCallEnum.BUS_ARRIVAL, busStop, BusArrivalResponse.class);
 				busArrivalRespList.add(response);
 			}
 		}
@@ -48,6 +50,7 @@ public class PiApi {
 		log.info("************************* END getBusArrivalTimes ************************* ");
 		return mutliBusStopArrivalresponse;
 	}
+
 
 	@PostMapping(value = "/remoteControlAction", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public String executeRemoteControlCommand(
