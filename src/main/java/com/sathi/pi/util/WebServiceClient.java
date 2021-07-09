@@ -40,7 +40,7 @@ public class WebServiceClient {
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestProperty("AccountKey", API_ACCOUNT_KEY);
 
-            if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != 200 ) {
                 log.error("Error connection with error code : {}", conn.getResponseCode());
             }
 
